@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class TimedTestCase extends TestCase
 {
-    private const REPORT_FORMAT = ' %-25s %8.4f %12.2f';
-    private const REPORT_HEADER_FORMAT = ' %-25s %8s %12s';
+    private const REPORT_FORMAT = ' %\'.-35s %8.4f %12.2f';
+    private const REPORT_HEADER_FORMAT = ' %-35s %8s %12s';
     private const TITLE_FORMAT = '%s (%s times)';
 
     protected $testCases;
@@ -69,6 +69,7 @@ abstract class TimedTestCase extends TestCase
         $time = 0;
         $memoryAtStart = memory_get_usage();
         for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
+            $testCase->setName('test');
             $testCaseResult = $testCase->run();
             $time += $testCaseResult->time();
         }

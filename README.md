@@ -24,7 +24,7 @@ This project was created to compare and analyse the performance of testing techn
 
 You can select the TestCases to compare, the number of times to execute and a title for the results table.
 
-* TesCases: are the TestCases you want to compare. They are standard phpunit TestCases. You don't need to change or prepare your own in any way.
+* TesCases: are the TestCases you want to compare. They are standard phpunit TestCases. You don't need to change or prepare your own in any way except that you need to call the test you want to profile as 'test'.
 * Times to execute: in very fast test, time differences could be too small, so test are executed several times so you can get larger numbers that could provide a realistic measure of how a full test suite could perform.
 * Title: results are shown in a results table so you can use your own for every test comparision.
 

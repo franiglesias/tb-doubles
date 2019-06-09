@@ -16,7 +16,7 @@ class OriginalClassTest extends TestCase
         $this->sample = new Sample('sample data');
     }
 
-    public function testProphecyMockTest(): void
+    public function test(): void
     {
         $this->assertEquals('sample data', $this->sample->data());
     }

@@ -14,13 +14,13 @@ class ProphecyMockTest extends TestCase
     protected function setUp(): void
     {
         $sampleProphet = $this
-            ->prophesize(Sample::class)
-            ->data()->willReturn('sample data');
+            ->prophesize(Sample::class);
+        $sampleProphet->data()->willReturn('sample data');
 
         $this->sample = $sampleProphet->reveal();
     }
 
-    public function testProphecyMockTest(): void
+    public function test(): void
     {
         $this->assertEquals('sample data', $this->sample->data());
     }
