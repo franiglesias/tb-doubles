@@ -9,8 +9,10 @@ abstract class TimedTestCase extends TestCase
 {
     private const REPORT_FORMAT = ' %-25s %8.4f %12.2f';
     private const REPORT_HEADER_FORMAT = ' %-25s %8s %12s';
-    protected $iterations = 500;
+    private const TITLE_FORMAT = '%s (%s times)';
+
     protected $testCases;
+    protected $executeTimes = 500;
     protected $results = [];
     protected $title = 'Comparative test performance and consumption';
 
@@ -21,7 +23,7 @@ abstract class TimedTestCase extends TestCase
 
     protected function executeTimes(int $iterations): void
     {
-        $this->iterations = $iterations;
+        $this->executeTimes = $iterations;
     }
 
     protected function setTitle(string $title): void
@@ -53,13 +55,8 @@ abstract class TimedTestCase extends TestCase
 
     private function printResults(): void
     {
-        print PHP_EOL;
-        print $this->title;
-        print(PHP_EOL . str_pad('', strlen($this->title), '=') . PHP_EOL);
-        print PHP_EOL;
-        $header = sprintf(self::REPORT_HEADER_FORMAT . PHP_EOL, 'Method', 'Time (s)', 'Memory (KB)');
-        print $header;
-        print(str_pad('', strlen($header), '-') . PHP_EOL);
+        $this->printHeader(sprintf(self::TITLE_FORMAT, $this->title, $this->executeTimes), '=');
+        $this->printHeader(sprintf(self::REPORT_HEADER_FORMAT . PHP_EOL, 'Method', 'Time (s)', 'Memory (KB)'));
 
         /** @var Result $result */
         foreach ($this->results as $result) {
@@ -67,17 +64,23 @@ abstract class TimedTestCase extends TestCase
         }
     }
 
-    private function executeAndGetResult(TestCase $testCase)
+    private function executeAndGetResult(TestCase $testCase): Result
     {
         $time = 0;
         $memoryAtStart = memory_get_usage();
-        for ($iteration = 0; $iteration < $this->iterations; $iteration++) {
+        for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
             $testCaseResult = $testCase->run();
             $time += $testCaseResult->time();
         }
         $memoryUsed = memory_get_usage() - $memoryAtStart;
 
         return Result::fromTestCaseTimeAndMemoryInBytes($testCase, $time, $memoryUsed);
+    }
+
+    private function printHeader(string $header, string $line = '-'): void
+    {
+        print PHP_EOL . $header;
+        print(PHP_EOL . str_pad('', strlen($header), $line) . PHP_EOL);
     }
 }
 
