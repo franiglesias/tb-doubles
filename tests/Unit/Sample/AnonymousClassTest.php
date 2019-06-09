@@ -18,7 +18,7 @@ class AnonymousClassTest extends TestCase
         };
     }
 
-    public function testProphecyMockTest(): void
+    public function test(): void
     {
         $this->assertEquals('sample data', $this->sample->data());
     }
