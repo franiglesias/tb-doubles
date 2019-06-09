@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Tests\Sample;
+namespace App\Tests\Unit\Sample;
 
 use App\Sample;
 use PHPUnit\Framework\TestCase;

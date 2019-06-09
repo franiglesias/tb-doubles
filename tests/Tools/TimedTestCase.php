@@ -1,21 +1,32 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Tools;
 
 use PHPUnit\Framework\TestCase;
 
 abstract class TimedTestCase extends TestCase
 {
-    private const REPORT_FORMAT = ' %-25s %8.4f %10.2f';
-    private const REPORT_HEADER_FORMAT = ' %-25s %8s %10s';
-    protected const ITERATIONS = 500;
+    private const REPORT_FORMAT = ' %-25s %8.4f %12.2f';
+    private const REPORT_HEADER_FORMAT = ' %-25s %8s %12s';
+    protected $iterations = 500;
     protected $testCases;
     protected $results = [];
+    protected $title = 'Comparative test performance and consumption';
 
     protected function addTestCase(TestCase $testCase): void
     {
         $this->testCases[] = $testCase;
+    }
+
+    protected function executeTimes(int $iterations): void
+    {
+        $this->iterations = $iterations;
+    }
+
+    protected function setTitle(string $title): void
+    {
+        $this->title = $title;
     }
 
     public function testPerformance(): void
@@ -42,7 +53,11 @@ abstract class TimedTestCase extends TestCase
 
     private function printResults(): void
     {
-        $header = sprintf(self::REPORT_HEADER_FORMAT . PHP_EOL, 'Method', 'Time(s)', 'Memory(KB)');
+        print PHP_EOL;
+        print $this->title;
+        print(PHP_EOL . str_pad('', strlen($this->title), '=') . PHP_EOL);
+        print PHP_EOL;
+        $header = sprintf(self::REPORT_HEADER_FORMAT . PHP_EOL, 'Method', 'Time (s)', 'Memory (KB)');
         print $header;
         print(str_pad('', strlen($header), '-') . PHP_EOL);
 
@@ -56,7 +71,7 @@ abstract class TimedTestCase extends TestCase
     {
         $time = 0;
         $memoryAtStart = memory_get_usage();
-        for ($iteration = 0; $iteration < static::ITERATIONS; $iteration++) {
+        for ($iteration = 0; $iteration < $this->iterations; $iteration++) {
             $testCaseResult = $testCase->run();
             $time += $testCaseResult->time();
         }

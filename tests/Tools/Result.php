@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Tools;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
