@@ -14,6 +14,7 @@ class NativeMockTest extends TestCase
     protected function setUp(): void
     {
         $this->sample = $this->createMock(Sample::class);
+        $this->sample->method('data')->willReturn('sample data');
     }
 
     public function test(): void
