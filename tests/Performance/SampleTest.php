@@ -13,10 +13,10 @@ class SampleTest extends TimedTestCase
 {
     protected function setUp(): void
     {
-        $this->addTestCase(new ProphecyMockTest());
-        $this->addTestCase(new AnonymousClassTest());
-        $this->addTestCase(new NativeMockTest());
-        $this->addTestCase(new OriginalClassTest());
+        $this->addTest(new ProphecyMockTest());
+        $this->addTest(new AnonymousClassTest());
+        $this->addTest(new NativeMockTest());
+        $this->addTest(new OriginalClassTest());
 
         $this->executeTimes(250);
 

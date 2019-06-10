@@ -3,9 +3,6 @@ declare (strict_types=1);
 
 namespace App\Tests\Tools;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestResult;
-
 class Result
 {
     private $name;
@@ -19,27 +16,9 @@ class Result
         $this->memory = $memory;
     }
 
-    public static function fromTestCaseAndResult(TestCase $testCase, TestResult $testResult): Result
+    public static function fromDefinitionTimeAndMemoryInBytes(Definition $test, float $time, int $memoryInBytes): Result
     {
-        $className = self::className($testCase);
-
-        return new static($className, $testResult->time(), 0);
-    }
-
-    public static function fromTestCaseTimeAndMemoryInBytes(TestCase $testCase, float $time, int $memoryInBytes): Result
-    {
-        $className = self::className($testCase);
-
-        return new static($className, $time, $memoryInBytes / 1024);
-    }
-
-    private static function className(TestCase $testCase): string
-    {
-        $testCaseName = get_class($testCase);
-        $path = explode('\\', $testCaseName);
-        $className = array_pop($path);
-
-        return $className;
+        return new static($test->name(), $time, $memoryInBytes / 1024);
     }
 
     public function name(): string

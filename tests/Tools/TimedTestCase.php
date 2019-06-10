@@ -11,14 +11,14 @@ abstract class TimedTestCase extends TestCase
     private const REPORT_HEADER_FORMAT = ' %-35s %8s %12s';
     private const TITLE_FORMAT = '%s (%s times)';
 
-    protected $testCases;
-    protected $executeTimes = 500;
+    protected $tests;
+    protected $executeTimes = 50;
     protected $results = [];
     protected $title = 'Comparative test performance and consumption';
 
-    protected function addTestCase(TestCase $testCase): void
+    protected function addTest(TestCase $testCase, string $testMethod = 'test'): void
     {
-        $this->testCases[] = $testCase;
+        $this->tests[] = new Definition($testCase, $testMethod);
     }
 
     protected function executeTimes(int $iterations): void
@@ -33,13 +33,26 @@ abstract class TimedTestCase extends TestCase
 
     public function testPerformance(): void
     {
-        /** @var TestCase $testCase */
-        foreach ($this->testCases as $testCase) {
-            $this->results[] = $this->executeAndGetResult($testCase);
+        /** @var Definition $test */
+        foreach ($this->tests as $test) {
+            $this->results[] = $this->executeAndGetResult($test);
         }
         $this->printSortedResults();
 
         $this->assertTrue(true);
+    }
+
+    private function executeAndGetResult(Definition $test): Result
+    {
+        $time = 0;
+        $memoryAtStart = memory_get_usage();
+        for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
+            $testCaseResult = $test->run();
+            $time += $testCaseResult->time();
+        }
+        $memoryUsed = memory_get_usage() - $memoryAtStart;
+
+        return Result::fromDefinitionTimeAndMemoryInBytes($test, $time, $memoryUsed);
     }
 
     private function printSortedResults(): void
@@ -64,24 +77,9 @@ abstract class TimedTestCase extends TestCase
         }
     }
 
-    private function executeAndGetResult(TestCase $testCase): Result
-    {
-        $time = 0;
-        $memoryAtStart = memory_get_usage();
-        for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
-            $testCase->setName('test');
-            $testCaseResult = $testCase->run();
-            $time += $testCaseResult->time();
-        }
-        $memoryUsed = memory_get_usage() - $memoryAtStart;
-
-        return Result::fromTestCaseTimeAndMemoryInBytes($testCase, $time, $memoryUsed);
-    }
-
     private function printHeader(string $header, string $line = '-'): void
     {
         print PHP_EOL . $header;
         print(PHP_EOL . str_pad('', strlen($header), $line) . PHP_EOL);
     }
 }
-
