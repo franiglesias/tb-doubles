@@ -35,5 +35,4 @@ class Result
     {
         return $this->memory;
     }
-
 }
