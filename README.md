@@ -3,6 +3,10 @@ Test performance
 
 This is a simple project to analyse PHP test performance.
 
+## Last changes
+
+2019-06-10: Run tests in separated processes and fix bad memory consumption calculation. Thanks to @sergiosusa for point to the issue.
+2019-06-09: First version.
 
 ## Installation
 

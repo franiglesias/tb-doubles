@@ -45,14 +45,16 @@ abstract class TimedTestCase extends TestCase
     private function executeAndGetResult(Definition $test): Result
     {
         $time = 0;
-        $memoryAtStart = memory_get_usage();
+        $memoryUsedInBytes = 0;
+        $test->purgue();
         for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
+            $memoryAtStart = memory_get_usage();
             $testCaseResult = $test->run();
             $time += $testCaseResult->time();
+            $memoryUsedInBytes += memory_get_usage() - $memoryAtStart;
         }
-        $memoryUsed = memory_get_usage() - $memoryAtStart;
 
-        return Result::fromDefinitionTimeAndMemoryInBytes($test, $time, $memoryUsed);
+        return Result::fromDefinitionTimeAndMemoryInBytes($test, $time, $memoryUsedInBytes);
     }
 
     private function printSortedResults(): void

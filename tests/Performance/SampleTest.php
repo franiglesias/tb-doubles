@@ -13,12 +13,12 @@ class SampleTest extends TimedTestCase
 {
     protected function setUp(): void
     {
-        $this->addTest(new ProphecyMockTest());
-        $this->addTest(new AnonymousClassTest());
-        $this->addTest(new NativeMockTest());
         $this->addTest(new OriginalClassTest());
+        $this->addTest(new AnonymousClassTest());
+        $this->addTest(new ProphecyMockTest());
+        $this->addTest(new NativeMockTest());
 
-        $this->executeTimes(250);
+        $this->executeTimes(100);
 
         $this->setTitle('Test Doubles creation methods');
     }

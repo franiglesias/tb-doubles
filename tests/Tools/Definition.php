@@ -17,6 +17,8 @@ class Definition
     {
         $this->testCase = $testCase;
         $this->testCase->setName($method);
+        $this->testCase->setPreserveGlobalState(false);
+        $this->testCase->setRunClassInSeparateProcess(true);
         $this->method = $method;
     }
 
@@ -38,6 +40,11 @@ class Definition
     public function run(): TestResult
     {
         return $this->testCase()->run();
+    }
+
+    public function purgue(): void
+    {
+        $this->run();
     }
 
     private function testCaseName(): string
