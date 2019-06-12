@@ -33,6 +33,7 @@ abstract class TimedTestCase extends TestCase
 
     public function testPerformance(): void
     {
+        $this->tests[0]->purgue();
         /** @var Definition $test */
         foreach ($this->tests as $test) {
             $this->results[] = $this->executeAndGetResult($test);
@@ -46,7 +47,6 @@ abstract class TimedTestCase extends TestCase
     {
         $time = 0;
         $memoryUsedInBytes = 0;
-        $test->purgue();
         for ($iteration = 0; $iteration < $this->executeTimes; $iteration++) {
             $memoryAtStart = memory_get_usage();
             $testCaseResult = $test->run();

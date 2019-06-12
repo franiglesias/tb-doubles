@@ -6,7 +6,7 @@ namespace App\Tests\Unit\SampleBehaviour;
 use App\SampleBehaviour;
 use PHPUnit\Framework\TestCase;
 
-class AnonymousSampleBehaviourTest extends TestCase
+class AnonymousStubSampleBehaviourTest extends TestCase
 {
     /** @var SampleBehaviour */
     private $sampleBehaviour;
@@ -15,6 +15,10 @@ class AnonymousSampleBehaviourTest extends TestCase
     {
         $this->sampleBehaviour = new class ('sample') extends SampleBehaviour
         {
+            public function execute(string $value): string
+            {
+                return 'sample data';
+            }
         };
     }
 

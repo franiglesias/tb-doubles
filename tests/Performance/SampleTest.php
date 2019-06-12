@@ -18,7 +18,7 @@ class SampleTest extends TimedTestCase
         $this->addTest(new ProphecyMockTest());
         $this->addTest(new NativeMockTest());
 
-        $this->executeTimes(100);
+        $this->executeTimes(50);
 
         $this->setTitle('Test Doubles creation methods');
     }
